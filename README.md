@@ -26,5 +26,5 @@ In the case when we have overfitting we can use one of this methods: Dropout, Da
 
 9-Finally we will generate predictions using our test dataset images.
 
-10-Analyze the results of the 2 models, our custom model and the Mobilenet model, used to this task:
+10-Analyze the results of the 2 models, our custom model and the Mobilenet model, used to this task
   
