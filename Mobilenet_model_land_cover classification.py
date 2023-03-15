@@ -18,7 +18,6 @@ import numpy as np
 
 # In[6]:
 
-
 train_AnnualCrop_dir = os.path.join('Desktop/train_data/AnnualCrop')
 
 train_Forest_dir = os.path.join('Desktop/train_data/Forest')
@@ -42,7 +41,6 @@ train_SeaLake_dir = os.path.join('Desktop/train_data/SeaLake')
 
 # In[8]:
 
-
 valid_AnnualCrop_dir = os.path.join('Desktop/valid_data/AnnualCrop')
 
 valid_Forest_dir = os.path.join('Desktop/valid_data/Forest')
@@ -65,8 +63,6 @@ valid_SeaLake_dir = os.path.join('Desktop/valid_data/SeaLake')
 
 
 # In[9]:
-
-
 test_AnnualCrop_dir = os.path.join('Desktop/test_data/AnnualCrop')
 
 test_Forest_dir = os.path.join('Desktop/test_data/Forest')
@@ -89,8 +85,6 @@ test_SeaLake_dir = os.path.join('Desktop/test_data/SeaLake')
 
 
 # In[7]:
-
-
 print('total training AnnualCrop images:', len(os.listdir(train_AnnualCrop_dir)))
 print('total training Forest images:', len(os.listdir(train_Forest_dir)))
 print('total training HerbaceousVegetation images:', len(os.listdir(train_HerbaceousVegetation_dir)))
@@ -104,8 +98,6 @@ print('total training SeaLake images:', len(os.listdir(train_SeaLake_dir)))
 
 
 # In[10]:
-
-
 print('total validation AnnualCrop images:', len(os.listdir(valid_AnnualCrop_dir)))
 print('total validation Forest images:', len(os.listdir(valid_Forest_dir)))
 print('total validation HerbaceousVegetation images:', len(os.listdir(valid_HerbaceousVegetation_dir)))
@@ -119,8 +111,6 @@ print('total validation SeaLake images:', len(os.listdir(valid_SeaLake_dir)))
 
 
 # In[11]:
-
-
 print('total testing AnnualCrop images:', len(os.listdir(test_AnnualCrop_dir)))
 print('total testing Forest images:', len(os.listdir(test_Forest_dir)))
 print('total testing HerbaceousVegetation images:', len(os.listdir(test_HerbaceousVegetation_dir)))
@@ -134,16 +124,11 @@ print('total testing SeaLake images:', len(os.listdir(test_SeaLake_dir)))
 
 
 # In[12]:
-
-
 img = mpimg.imread('Desktop/train_data/AnnualCrop/AnnualCrop_1.jpg')
 print(img.shape)
 imgplot = plt.imshow(img)
 
-
 # In[14]:
-
-
 #Using the MobileNet model architecture by using pre-trained weights on ImageNet dataset instead of using random initialization
 # of the weights and we will fine tune this model by not including the fully connected layers and using our fully connected 
 # layers adapted to our project by setting include_top=False.
@@ -159,14 +144,10 @@ mobilenet = Model(inputs=model.input, outputs=sortie)
 
 
 # In[ ]:
-
-
 mobilenet.summary()
 
 
 # In[15]:
-
-
 # We will use the data augmentation to avoid the overfitting problem:
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -199,8 +180,6 @@ validation_generator = validation_datagen.flow_from_directory(
 
 
 # In[16]:
-
-
 #compile the model:
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.optimizers import Adam
@@ -215,8 +194,6 @@ mobilenet.compile(
 
 
 # In[18]:
-
-
 history = mobilenet.fit(
     train_generator,
     epochs = 10,
@@ -225,10 +202,7 @@ history = mobilenet.fit(
 
 
 # In[20]:
-
-
 # Plot the loss and accuracy curves for training and validation to know if we overfitting or not:
-
 acc = history.history['acc']
 val_acc = history.history['val_acc']
 loss = history.history['loss']
@@ -256,58 +230,38 @@ print("test loss, test acc:", results)
 
 
 # In[23]:
-
-
 from sklearn.metrics import recall_score, precision_score, f1_score, confusion_matrix, classification_report
 
 
 # In[24]:
-
-
 y_pred=mobilenet.predict(validation_generator)
 
 
 # In[25]:
-
-
 y_pred_modi = np.argmax(y_pred, axis=1)
 
 
 # In[26]:
-
-
 print(confusion_matrix(validation_generator.classes, y_pred_modi))
 
 
 # In[27]:
-
-
 print(classification_report(validation_generator.classes, y_pred_modi))
 
 
 # In[28]:
-
-
 #saving the model:
 from keras.models import load_model
 mobilenet.save('model_mobilenet_land cover_file.h5')
 
 
 # In[29]:
-
-
 my_model_mobilenet = load_model('model_mobilenet_land cover_file.h5')
 
 
 # In[ ]:
-
-
 # predicting on the testing data:
-
-
 # In[31]:
-
-
 test_datagen = ImageDataGenerator()
 test_generator = test_datagen.flow_from_directory(
         'Desktop/test_data',  
@@ -316,25 +270,18 @@ test_generator = test_datagen.flow_from_directory(
 
 
 # In[32]:
-
-
 predictions = mobilenet.predict(test_generator)
 
-
 # In[33]:
-
-
 predictions_modi = np.argmax(predictions, axis=1)
 
 
 # In[34]:
-
-
 for i, j in enumerate(predictions_modi[:20]):
     print("Actual_classe: {}".format(test_generator.classes[i]), "Predicted_classe: {}".format(j))
 
 
-# In[ ]:
+
 
 
 
