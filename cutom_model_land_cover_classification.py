@@ -30,7 +30,6 @@ zip_ref.extractall('/content/drive/MyDrive/test_data')
 zip_ref.close()
 
 # Directory with our different classes training pictures :
-
 train_AnnualCrop_dir = os.path.join('/content/drive/MyDrive/train_data/train_data/AnnualCrop')
 
 train_Forest_dir = os.path.join('/content/drive/MyDrive/train_data/train_data/Forest')
@@ -51,8 +50,8 @@ train_River_dir = os.path.join('/content/drive/MyDrive/train_data/train_data/Riv
 
 train_SeaLake_dir = os.path.join('/content/drive/MyDrive/train_data/train_data/SeaLake')
 
-# Directory with our different classes validation pictures :
 
+# Directory with our different classes validation pictures :
 valid_AnnualCrop_dir = os.path.join('/content/drive/MyDrive/valid_data/valid_data/AnnualCrop')
 
 valid_Forest_dir = os.path.join('/content/drive/MyDrive/valid_data/valid_data/Forest')
@@ -73,8 +72,8 @@ valid_River_dir = os.path.join('/content/drive/MyDrive/valid_data/valid_data/Riv
 
 valid_SeaLake_dir = os.path.join('/content/drive/MyDrive/valid_data/valid_data/SeaLake')
 
-# Directory with our different classes testing pictures :
 
+# Directory with our different classes testing pictures :
 test_AnnualCrop_dir = os.path.join('/content/drive/MyDrive/test_data/test_data/AnnualCrop')
 
 test_Forest_dir = os.path.join('/content/drive/MyDrive/test_data/test_data/Forest')
@@ -95,6 +94,7 @@ test_River_dir = os.path.join('/content/drive/MyDrive/test_data/test_data/River'
 
 test_SeaLake_dir = os.path.join('/content/drive/MyDrive/test_data/test_data/SeaLake')
 
+
 print('total training AnnualCrop images:', len(os.listdir(train_AnnualCrop_dir)))
 print('total training Forest images:', len(os.listdir(train_Forest_dir)))
 print('total training HerbaceousVegetation images:', len(os.listdir(train_HerbaceousVegetation_dir)))
@@ -105,6 +105,7 @@ print('total training PermanentCrop images:', len(os.listdir(train_PermanentCrop
 print('total training Residential images:', len(os.listdir(train_Residential_dir)))
 print('total training River images:', len(os.listdir(train_River_dir)))
 print('total training SeaLake images:', len(os.listdir(train_SeaLake_dir)))
+
 
 print('total validation AnnualCrop images:', len(os.listdir(valid_AnnualCrop_dir)))
 print('total validation Forest images:', len(os.listdir(valid_Forest_dir)))
@@ -117,6 +118,7 @@ print('total validation Residential images:', len(os.listdir(valid_Residential_d
 print('total validation River images:', len(os.listdir(valid_River_dir)))
 print('total validation SeaLake images:', len(os.listdir(valid_SeaLake_dir)))
 
+
 print('total testing AnnualCrop images:', len(os.listdir(test_AnnualCrop_dir)))
 print('total testing Forest images:', len(os.listdir(test_Forest_dir)))
 print('total testing HerbaceousVegetation images:', len(os.listdir(test_HerbaceousVegetation_dir)))
@@ -128,9 +130,11 @@ print('total testing Residential images:', len(os.listdir(test_Residential_dir))
 print('total testing River images:', len(os.listdir(test_River_dir)))
 print('total testing SeaLake images:', len(os.listdir(test_SeaLake_dir)))
 
+
 img = mpimg.imread('/content/drive/MyDrive/train_data/train_data/AnnualCrop/AnnualCrop_1.jpg')
 print(img.shape)
 imgplot = plt.imshow(img)
+
 
 #defining our custom CNN model architecture:
 model = keras.Sequential([
@@ -150,8 +154,8 @@ model = keras.Sequential([
 
 model.summary()
 
-# We will use the data augmentation to avoid the overfitting problem:
 
+# We will use the data augmentation to avoid the overfitting problem:
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 train_datagen = ImageDataGenerator(
@@ -163,9 +167,7 @@ train_datagen = ImageDataGenerator(
       zoom_range=0.2,
       horizontal_flip=True,
       fill_mode='nearest')
-
 validation_datagen = ImageDataGenerator(rescale=1/255)
-
 # Flow training images in batches of 128 using train_datagen generator
 # flow_from_directory=Takes the path to a directory & generates batches of augmented data.
 train_generator = train_datagen.flow_from_directory(
@@ -173,24 +175,24 @@ train_generator = train_datagen.flow_from_directory(
         target_size=(64, 64),  # All images will be resized to 64x64
         batch_size=256, # Size of the batches of data (default: 32).
         class_mode='categorical')
-
 validation_generator = validation_datagen.flow_from_directory(
         '/content/drive/MyDrive/valid_data/valid_data',  
         target_size=(64, 64),  
         batch_size=32,
         class_mode='categorical')
 
+
 #compile the model:
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.optimizers import Adamax
-
 model.compile(
     loss = 'categorical_crossentropy',
     optimizer = Adam(lr=0.001) ,
     metrics = ['accuracy']
 )
+
 
 history = model.fit(
     train_generator,
@@ -198,31 +200,30 @@ history = model.fit(
     validation_data = validation_generator
 )
 
-# Plot the loss and accuracy curves for training and validation to know if we overfitting or not:
 
+# Plot the loss and accuracy curves for training and validation to know if we overfitting or not:
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
 loss = history.history['loss']
 val_loss = history.history['val_loss']
-
 plt.plot(acc,label='Training accuracy')
 plt.plot(val_acc,label='Validation accuracy')
 plt.title('Training and validation accuracy')
 plt.legend()
 plt.show()
-
 plt.plot(loss,label='Training Loss')
 plt.plot(val_loss,label='Validation Loss')
 plt.title('Training and validation loss')
 plt.legend()
 plt.show()
 
+
 #evaluate the model on the validation data:
 results = model.evaluate(validation_generator, verbose=0)
 print("test loss, test acc:", results)
 
-#We will use other classification metrics like confusion_matrix, f1_score, recall_score, precision_score :
 
+#We will use other classification metrics like confusion_matrix, f1_score, recall_score, precision_score :
 from sklearn.metrics import recall_score, precision_score, f1_score, confusion_matrix, classification_report
 
 y_pred=model.predict(validation_generator)
@@ -233,17 +234,19 @@ print(confusion_matrix(validation_generator.classes, y_pred_modi))
 
 print(classification_report(validation_generator.classes, y_pred_modi))
 
-#recall_score(validation_generator.classes, y_pred_modi, average='micro')
+recall_score(validation_generator.classes, y_pred_modi, average='micro')
 
-#precision_score(validation_generator.classes, y_pred_modi, average='micro')
+precision_score(validation_generator.classes, y_pred_modi, average='micro')
 
-#f1_score(validation_generator.classes, y_pred_modi, average='micro')
+f1_score(validation_generator.classes, y_pred_modi, average='micro')
+
 
 #saving the model:
 from keras.models import load_model
 model.save('model_file.h5')
 
 my_model = load_model('model_file.h5')
+
 
 # predicting on the testing data:
 
@@ -252,10 +255,6 @@ test_generator = test_datagen.flow_from_directory(
         '/content/drive/MyDrive/test_data/test_data',  
         target_size=(64, 64),  
         class_mode='categorical')
-
-#test_generator[0][0]
-
-#test_generator.classes
 
 predictions = my_model.predict(test_generator)
 
