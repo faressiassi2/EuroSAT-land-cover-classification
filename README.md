@@ -26,6 +26,5 @@ In the case when we have overfitting we can use one of this methods: Dropout, Da
 
 9-Finally we will generate predictions using our test dataset images.
 
-10-Analyze the results of the 2 models used to this task:
-  For the custom model architecture I did not get good results in the finall predictions used the test dataset images of 20 images.
-  But for the MobileNet model architecture that I have fine tune for our task here I get a good results in the finall predictions used the test dataset images of 20    images.
+10-Analyze the results of the 2 models, our custom model and the Mobilenet model, used to this task:
+  
