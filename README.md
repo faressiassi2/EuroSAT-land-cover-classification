@@ -2,7 +2,9 @@
 
 We will train a Machine Learning model on the EuroSAT land cover classification dataset.
 Specifically we will use the Convolutional Neural network or CNN to this multi-classification task because here we have a dataset of images and the CNNs are very powerful to extracting the features of images because it use the filtres and convolution to do that.
-
+pre-trained weights on ImageNet dataset instead of using random initialization
+# of the weights and we will fine tune this model by not including the fully connected layers and using our fully connected 
+# layers adapted to our project by setting include_top=False.
 This is the steps that I have used in this project:
 1- We will start by gathering the dataset of images.
 
@@ -10,6 +12,7 @@ This is the steps that I have used in this project:
 And also check the number of each of the classes in our dataset to verify if we have imbalanced dataset and then define the metrics to evaluate our model like accuracy, confusion_matrix, classification_report, recall, f1-score.
 
 3-Define our model architecture, here we are using Convolutional Neural Network because we have dataset of images. We will define our custom CNN model architecture by defining a lot of layers of Convolutions and Maxpooling and Dense layers in buttom of the model. In general the architectures of a lot of CNN model is composed by a lot of convolutional layers followed by Maxpooling layers to make the features extractions of the images and finally the dense layers to make the classification task.
+I will also try to use pre-defined MobileNet model architecture by using a pre-trained weights on ImageNet dataset instead of using random initialization of the weights and we will fine tune this model by not including the fully connected layers and using our fully connected layers adapted to our project by setting include_top=False.
 
 4-We compile the model by defining an optimizer like Adam, RMSprop or SGD to update our model parameters in the training Then we define the loss used in the training and here we will use categorical_crossentropy because we have multiclass-classification problem.
 
@@ -21,3 +24,5 @@ And also check the number of each of the classes in our dataset to verify if we 
 
 8-Hyperparameter optimization or tuning of the model by chosing a set of optimal hyperparameters of the model like learning rate , number of neurons and layers, optimizer and batch size.
 In the case when we have overfitting we can use one of this methods: Dropout, Data augmentation, L2 regularization and Early stopping.
+
+9-Finally we will generate predictions using our test dataset images.
