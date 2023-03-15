@@ -2,9 +2,7 @@
 
 We will train a Machine Learning model on the EuroSAT land cover classification dataset.
 Specifically we will use the Convolutional Neural network or CNN to this multi-classification task because here we have a dataset of images and the CNNs are very powerful to extracting the features of images because it use the filtres and convolution to do that.
-pre-trained weights on ImageNet dataset instead of using random initialization
-# of the weights and we will fine tune this model by not including the fully connected layers and using our fully connected 
-# layers adapted to our project by setting include_top=False.
+
 This is the steps that I have used in this project:
 1- We will start by gathering the dataset of images.
 
